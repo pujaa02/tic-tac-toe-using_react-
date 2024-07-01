@@ -1,22 +1,24 @@
 import React, { useState } from "react";
 import "./tictactoe.css";
 
-interface squareprops {
-    value: string | null,
+interface SquareProps {
+    value: string | null;
     onSquareClick: () => void;
 }
-function Square({ value, onSquareClick }: squareprops) {
+
+const Square: React.FC<SquareProps> = ({ value, onSquareClick }) => {
     return (
         <button className="square" onClick={onSquareClick}>
             {value}
         </button>
     );
-}
+};
+
 const TicTacToe: React.FC = () => {
-    const [status, setStatus] = useState<string>('')
     const [xIsNext, setXIsNext] = useState<boolean>(true);
-    const [squares, setSquares] = useState<string[]>(Array(9).fill(null));
-    function handleClick(i: number) {
+    const [squares, setSquares] = useState<Array<string | null>>(Array(9).fill(null));
+
+    const handleClick = (i: number) => {
         if (calculateWinner(squares) || squares[i]) {
             return;
         }
@@ -28,13 +30,15 @@ const TicTacToe: React.FC = () => {
         }
         setSquares(nextSquares);
         setXIsNext(!xIsNext);
-        const winner = calculateWinner(squares);
-        if (winner) {
-            setStatus(winner)
-        }
+    };
+    const winner = calculateWinner(squares);
+    let status;
+    if (winner) {
+        status = "Winner: " + winner;
     }
     return (
         <div className="container">
+            <button id="btn" onClick={() => setSquares(Array(9).fill(null))}>Reset</button>
             <div className="status">{status}</div>
             <div className="board-row">
                 <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
@@ -54,9 +58,7 @@ const TicTacToe: React.FC = () => {
         </div>
     );
 }
-
-export default TicTacToe;
-function calculateWinner(squares: string[]) {
+function calculateWinner(squares: Array<string | null>): string | null {
     const lines = [
         [0, 1, 2],
         [3, 4, 5],
@@ -65,14 +67,14 @@ function calculateWinner(squares: string[]) {
         [1, 4, 7],
         [2, 5, 8],
         [0, 4, 8],
-        [2, 4, 6]
+        [2, 4, 6],
     ];
     for (let i = 0; i < lines.length; i++) {
         const [a, b, c] = lines[i];
-        console.log(squares[a], "swcondddd");
         if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
             return squares[a];
         }
     }
     return null;
 }
+export default TicTacToe;
