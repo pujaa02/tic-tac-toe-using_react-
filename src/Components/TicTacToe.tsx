@@ -1,14 +1,17 @@
 import React, { useState } from "react";
 import "./tictactoe.css";
 
-function Square({ value, onSquareClick }) {
+interface squareprops {
+    value: string | null,
+    onSquareClick: () => void;
+}
+function Square({ value, onSquareClick }: squareprops) {
     return (
         <button className="square" onClick={onSquareClick}>
             {value}
         </button>
     );
 }
-
 const TicTacToe: React.FC = () => {
     const [xIsNext, setXIsNext] = useState<boolean>(true);
     const [squares, setSquares] = useState<string[]>(Array(9).fill(null));
@@ -23,7 +26,7 @@ const TicTacToe: React.FC = () => {
         setXIsNext(!xIsNext);
     }
     return (
-        <div>
+        <div className="container">
             <div className="board-row">
                 <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
                 <Square value={squares[1]} onSquareClick={() => handleClick(1)} />

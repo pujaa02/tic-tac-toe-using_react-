@@ -1,11 +1,11 @@
 import React from "react";
 import "./App.css";
-import Board from "./Components/tictactoe";
+import TicTacToe from "./Components/TicTacToe";
 
 const App: React.FC = () => {
   return (
     <div className="App">
-      <Board />
+      <TicTacToe />
     </div>
   );
 };
