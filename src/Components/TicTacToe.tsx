@@ -13,6 +13,7 @@ function Square({ value, onSquareClick }: squareprops) {
     );
 }
 const TicTacToe: React.FC = () => {
+    const [status, setStatus] = useState<string>('')
     const [xIsNext, setXIsNext] = useState<boolean>(true);
     const [squares, setSquares] = useState<string[]>(Array(9).fill(null));
     function handleClick(i: number) {
@@ -28,30 +29,13 @@ const TicTacToe: React.FC = () => {
         setSquares(nextSquares);
         setXIsNext(!xIsNext);
         const winner = calculateWinner(squares);
-        console.log(winner);
-
-    }
-    function calculateWinner(squares: string[]) {
-        const lines = [
-            [0, 1, 2],
-            [3, 4, 5],
-            [6, 7, 8],
-            [0, 3, 6],
-            [1, 4, 7],
-            [2, 5, 8],
-            [0, 4, 8],
-            [2, 4, 6],
-        ];
-        for (let i = 0; i < lines.length; i++) {
-            const [a, b, c] = lines[i];
-            if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
-                return squares[a];
-            }
+        if (winner) {
+            setStatus(winner)
         }
-        return null;
     }
     return (
         <div className="container">
+            <div className="status">{status}</div>
             <div className="board-row">
                 <Square value={squares[0]} onSquareClick={() => handleClick(0)} />
                 <Square value={squares[1]} onSquareClick={() => handleClick(1)} />
@@ -72,3 +56,23 @@ const TicTacToe: React.FC = () => {
 }
 
 export default TicTacToe;
+function calculateWinner(squares: string[]) {
+    const lines = [
+        [0, 1, 2],
+        [3, 4, 5],
+        [6, 7, 8],
+        [0, 3, 6],
+        [1, 4, 7],
+        [2, 5, 8],
+        [0, 4, 8],
+        [2, 4, 6]
+    ];
+    for (let i = 0; i < lines.length; i++) {
+        const [a, b, c] = lines[i];
+        console.log(squares[a], "swcondddd");
+        if (squares[a] && squares[a] === squares[b] && squares[a] === squares[c]) {
+            return squares[a];
+        }
+    }
+    return null;
+}
